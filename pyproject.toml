@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "ids22-miniproject"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.5.1"
+scikit-learn = "^1.1.2"
+numpy = "^1.23.4"
+matplotlib = "^3.6.1"
+fastapi = "^0.85.1"
+uvicorn = {extras = ["standard"], version = "^0.19.0"}
+pydantic = "^1.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "backend.app:start"

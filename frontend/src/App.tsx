@@ -1,9 +1,10 @@
-import {useState} from "react";
-import { Container } from "react-dom";
-import styled from "styled-components";
-import Logo from "./components/Logo";
-import Navbar from "./components/Navbar";
-import ParameterForm from "./components/ParameterForm";
+import { useState } from 'react'
+import { Container } from 'react-dom'
+import styled from 'styled-components'
+import Logo from './components/Logo'
+import Navbar from './components/Navbar'
+import ParameterForm from './components/ParameterForm'
+import ResultsView from './components/ResultsView'
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const Container = styled.div`
   margin: 0 auto;
   justify-content: center;
   flex-direction: column;
-`;
+`
 
 type Page = 'front' | 'results'
 
@@ -22,16 +23,18 @@ const App = () => {
 
   return (
     <>
-      {page === 'results' ? <Navbar /> : ''}
-      <Container> 
-        {page == 'front' && (
+      {page === 'results' && <Navbar />}
+      <Container>
+        {page == 'front' ? (
           <>
             <Logo container />
             <ParameterForm switchToResulPage={() => setPage('results')} />
           </>
+        ) : (
+          <ResultsView />
         )}
       </Container>
     </>
-  );
-};
-export default App;
+  )
+}
+export default App
