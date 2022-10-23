@@ -33,16 +33,16 @@ const KwhNotation = styled.p`
 type Props = {
   title: string
   kwh?: number
-  next10Dataset?: number[]
+  next10Dataset?: { name: string, price: number }[]
 }
 
-const Next10Chart = ({ next10 }: Record<'next10', number[]>) => {
+const Next10Chart = ({ next10 }: Record<'next10', Props['next10Dataset']>) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" minHeight="300px">
       <LineChart
         width={500}
         height={300}
-        data={next10.map((n, i) => ({ name: i.toString(), price: n }))}
+        data={next10}
         margin={{
           top: 5,
           right: 30,

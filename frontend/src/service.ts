@@ -13,4 +13,5 @@ export type CalcResult = {
   }[]
 }
 
-export const doCalc = (params: CalcParams) => axios.post<CalcResult>('/api/price', params).then(({ data }) => data)
+export const doCalc = (params: Partial<CalcParams>) =>
+  axios.post<CalcResult>('/api/price', params).then(({ data }) => data)

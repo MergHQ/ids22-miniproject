@@ -1,4 +1,8 @@
+import { format } from 'date-fns'
+import { useContext } from 'react'
 import styled from 'styled-components'
+import { StateContext } from '../App'
+import { CalcResult } from '../service'
 import ActionButton from './ActionButton'
 import ResultCard from './ResultCard'
 
@@ -15,18 +19,26 @@ const ResultBox = styled.div`
   border-radius: 40px;
   margin-bottom: 35px;
 `
+type Props = {
+  results: CalcResult
+}
 
-const ResultsView = () => {
+const formatNext10Days = (next10: CalcResult['next10days']) =>
+  next10.map(({ price, date }) => ({ price, name: format(new Date(date), 'dd-MM-yyyy') }))
+
+const ResultsView = ({ results }: Props) => {
+  const { setState } = useContext(StateContext)
+
   return (
     <>
       <DateTitleContainer>01-05-2023</DateTitleContainer>
       <ResultBox>
-        <ResultCard title="Result" kwh={285} />
+        <ResultCard title="Result" kwh={results.kwh} />
       </ResultBox>
       <ResultBox>
-        <ResultCard title="Next 10 days" next10Dataset={[10,20,30,20,10,15,10]} />
+        <ResultCard title="Next 10 days" next10Dataset={formatNext10Days(results.next10days)} />
       </ResultBox>
-      <ActionButton>Back</ActionButton>
+      <ActionButton onClick={() => setState(() => ({ loadingResults: false }))}>Back</ActionButton>
     </>
   )
 }

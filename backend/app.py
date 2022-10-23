@@ -14,7 +14,7 @@ class PriceCalcParams(BaseModel):
     approx_consuption: int
 
 
-@app.post('/api/price-calculation')
+@app.post('/api/price')
 def price_calculation(price_calc_params: PriceCalcParams):
     print(f"got price calc params {price_calc_params}")
     return demo_data

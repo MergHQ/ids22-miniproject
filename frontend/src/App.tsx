@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 import { Container } from 'react-dom'
 import styled from 'styled-components'
 import Logo from './components/Logo'
 import Navbar from './components/Navbar'
 import ParameterForm from './components/ParameterForm'
 import ResultsView from './components/ResultsView'
+import {CalcResult} from './service'
 
 const Container = styled.div`
   display: flex;
@@ -16,25 +17,43 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-type Page = 'front' | 'results'
+type State = {
+  loadingResults: boolean
+  results?: CalcResult
+}
+
+type StateCtx = {
+  state: State
+  setState: (dispatch: (state: State) => State) => void
+}
+
+const initialState: State = {
+  loadingResults: false
+}
+
+export const StateContext = createContext<StateCtx>({
+  state: initialState,
+  setState: () => initialState
+})
 
 const App = () => {
-  const [page, setPage] = useState<Page>('front')
+  const [state, setState] = useState<State>(initialState)
 
   return (
-    <>
-      {page === 'results' && <Navbar />}
+    <StateContext.Provider value={{ state, setState }}>
+      {state.results && <Navbar />}
       <Container>
-        {page == 'front' ? (
+        {state.loadingResults && <h2>Loading...</h2>}
+        {!state.results ? (
           <>
             <Logo container />
-            <ParameterForm switchToResulPage={() => setPage('results')} />
+            <ParameterForm />
           </>
         ) : (
-          <ResultsView />
+          <ResultsView results={state.results} /> 
         )}
       </Container>
-    </>
+    </StateContext.Provider>
   )
 }
 export default App
