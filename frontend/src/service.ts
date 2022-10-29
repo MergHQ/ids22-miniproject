@@ -2,15 +2,17 @@ import axios from 'axios'
 
 export type CalcParams = {
   date: string
-  approx_consuption: number
+  approx_consumption: number
 }
 
 export type CalcResult = {
-  kwh: number
+  approx_consumption: number
+  date: string
   next10days: {
     price: number
     date: string
   }[]
+  price: number
 }
 
 export const doCalc = (params: Partial<CalcParams>) =>

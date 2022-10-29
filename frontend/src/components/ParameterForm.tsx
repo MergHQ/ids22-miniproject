@@ -19,7 +19,7 @@ const SubmitButtonContainer = styled.div`
 
 const ParameterForm = () => {
   const [form, setForm] = useState<Partial<CalcParams>>({})
-  const { setState } = useContext(StateContext)
+  const { setState, state } = useContext(StateContext)
 
   const updateForm = (key: keyof CalcParams) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((lastForm) => (lastForm ? { ...lastForm, [key]: e.target.value } : { [key]: e.target.value }))
@@ -38,12 +38,12 @@ const ParameterForm = () => {
       <TextInput type="date" placeholder="Select date" onChange={updateForm('date')} />
       <TextInput
         type="text"
-        rightLabel="kWh"
-        placeholder="Approx. energy consupmtion"
-        onChange={updateForm('approx_consuption')}
+        labelText="kWh"
+        placeholder="Your approx. daily energy consupmtion"
+        onChange={updateForm('approx_consumption')}
       />
       <SubmitButtonContainer>
-        <ActionButton type="submit">Submit</ActionButton>
+        <ActionButton type="submit" disabled={state.loadingResults}>Submit</ActionButton>
       </SubmitButtonContainer>
     </ParameterFormContainer>
   )

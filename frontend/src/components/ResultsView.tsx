@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { StateContext } from '../App'
@@ -23,20 +23,29 @@ type Props = {
   results: CalcResult
 }
 
-const formatNext10Days = (next10: CalcResult['next10days']) =>
-  next10.map(({ price, date }) => ({ price, name: format(new Date(date), 'dd-MM-yyyy') }))
+const convertToDate = (date: string) => parse(date, 'yyyy-MM-dd', new Date())
+
+const formatNext10Days = (next10: CalcResult['next10days'], approxConsumption: number) =>
+  next10.map(({ price, date }) => ({
+    price: price / 1000,
+    name: format(convertToDate(date), 'dd-MM'),
+    pricePerDay: approxConsumption * (price / 1000),
+  }))
 
 const ResultsView = ({ results }: Props) => {
   const { setState } = useContext(StateContext)
 
   return (
     <>
-      <DateTitleContainer>01-05-2023</DateTitleContainer>
+      <DateTitleContainer>{format(convertToDate(results.date), 'dd-MM-yyyy')}</DateTitleContainer>
       <ResultBox>
-        <ResultCard title="Result" kwh={results.kwh} />
+        <ResultCard title="Result" kwh={results.price} approxConsumption={results.approx_consumption} />
       </ResultBox>
       <ResultBox>
-        <ResultCard title="Next 10 days" next10Dataset={formatNext10Days(results.next10days)} />
+        <ResultCard
+          title="Next 10 days"
+          next10Dataset={formatNext10Days(results.next10days, results.approx_consumption)}
+        />
       </ResultBox>
       <ActionButton onClick={() => setState(() => ({ loadingResults: false }))}>Back</ActionButton>
     </>
