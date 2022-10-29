@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from backend.estimate import PriceEstimator
 
@@ -33,6 +34,9 @@ def price_calculation(price_calc_params: PriceEstimationParams) -> PriceEstimati
         "price": price24h,
         "next10days": next10days,
     }
+
+
+app.mount('/', StaticFiles(directory='./frontend/dist/', html=True), name='root')
 
 
 def start():

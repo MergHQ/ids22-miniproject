@@ -16,9 +16,9 @@ class PriceEstimator:
         try:
             self.rfr = jl.load('model.joblib')
         except:
-            self._train()
+            self._train(data)
 
-    def _train(self):
+    def _train(self, data: pd.DataFrame):
         np.random.seed(1)
         x = data[["hour","gas_price","oil_price","load","doy"]]
         y = data["price"]
